@@ -67,7 +67,7 @@ The tool converts the consolidated gateway URL into a scannable QR Matrix and re
 
 ### Installation
 
-#### Option A: From NPM (Once Published)
+#### Option A: From NPM 
 Install the package globally:
 ```bash
 npm install -g lanview
