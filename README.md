@@ -78,7 +78,7 @@ npx lanview
 ```
 
 #### Option B: From Source (Local Development)
-Since this package is in active development and yet to be published, you can install and run it from source:
+You can also install and run it from source:
 
 1. **Clone the repository and install dependencies:**
    ```bash
