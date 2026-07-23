@@ -1,6 +1,6 @@
 {
   "name": "lanview",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "An open-source, zero-config CLI utility built with Node.js to instantly preview full-stack web applications on mobile devices using your local network (LAN).",
   "type": "module",
   "main": "bin/cli.js",

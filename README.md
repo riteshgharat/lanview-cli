@@ -104,6 +104,32 @@ By default, this will run a proxy gateway on port `8080` routing:
 - `/api/*` to `http://localhost:5000`
 - Everything else to `http://localhost:3000`
 
+#### Serving Static Files (Live Server mode)
+
+Host a folder of static files over the LAN with live reload on save — a drop-in replacement for the VS Code **Live Server** extension, but scannable from your phone:
+```bash
+lanview --static                # serve current directory
+lanview --static ./public       # serve a specific folder
+lanview --static ./dist --spa   # SPA: unknown paths serve index.html
+lanview --static ./site --no-reload   # disable live reload
+lanview --static --open         # serve + open in your browser
+```
+
+In `--static` mode:
+- Live reload is **on** by default (a tiny WebSocket client is injected into served HTML; the file watcher debounces and pushes a reload message on change).
+- If a directory has no `index.html`, a directory listing is rendered.
+- `node_modules`, `.git`, and dotfile entries are ignored by the watcher.
+- `--spa` makes unknown non-file paths fall back to `index.html` (handy for React Router / Vue Router build output).
+- **Linux caveat:** Node's `fs.watch({ recursive: true })` only watches the top-level directory on Linux (subdirectory changes are not detected). On Windows and macOS, recursive watching works natively.
+
+#### Auto-Opening the Browser
+
+Add `--open` (or `-o`) to launch your system's default browser at the gateway URL on start. Works in both proxy and static mode:
+```bash
+lanview --open
+lanview --static --open
+```
+
 #### Customization
 
 You can customize the ports and paths via CLI options:
@@ -113,9 +139,13 @@ lanview --frontend 4000 --backend 8000 --gateway 9000 --api-prefix /graphql
 ```
 
 Options:
-- `-f, --frontend <port>` - Port of the frontend server (default: `3000`)
-- `-b, --backend <port>` - Port of the backend server (default: `5000`)
-- `-g, --gateway <port>` - Port of the proxy gateway (default: `8080`)
+- `-f, --frontend <port>` - Port of the frontend server (proxy mode, default: `3000`)
+- `-b, --backend <port>` - Port of the backend server (proxy mode, default: `5000`)
+- `-g, --gateway <port>` - Port of the proxy gateway / static server (default: `8080`)
 - `-p, --api-prefix <path>` - URL prefix to forward to the backend (default: `/api`, `none` if no prefix)
 - `-h, --host <ip>` - Manually specify your host IP instead of auto-discovery
+- `-s, --static [dir]` - Serve static files from a directory (Live Server mode). Disables proxy mode. Defaults to the current directory.
+- `--spa` - SPA fallback: serve `index.html` for unknown paths (only with `--static`)
+- `--no-reload` - Disable live reload in static mode (reload is on by default)
+- `-o, --open` - Auto-open the gateway URL in your default browser on start
 - `--help` - Show help information
